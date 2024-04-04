@@ -8,6 +8,9 @@
 */
 
 import router from '@adonisjs/core/services/router'
+import VeiculosController from '#controllers/veiculos_controller'
 
 router.on('/').render('pages/home')
-router.on('/autor').render('pages/autor')
+// router.on('/autor').render('pages/autor')
+
+router.resource('veiculos', VeiculosController)
