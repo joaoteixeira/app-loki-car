@@ -1,50 +1,57 @@
 @layout()
+<div class="page-header">
+  <h3 class="page-title"> Veículos - Novo </h3>
+  {{-- <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="#">Forms</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Form elements</li>
+    </ol>
+  </nav> --}}
+</div>
 <div class="row">
     <div class="col-12 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
-            <h4 class="card-title">Basic form elements</h4>
-            <p class="card-description"> Basic form elements </p>
-            <form class="forms-sample">
+
+            <form class="forms-sample" method="POST" action="{{ route('veiculos.store') }}">
+              
+              {{ csrfField() }}
+              
               <div class="form-group">
-                <label for="exampleInputName1">Name</label>
-                <input type="text" class="form-control" id="exampleInputName1" placeholder="Name">
+                <label for="inputMarca">Marca</label>
+                <input type="text" class="form-control" id="inputMarca" name="marca" placeholder="Informe a marca">
               </div>
               <div class="form-group">
-                <label for="exampleInputEmail3">Email address</label>
-                <input type="email" class="form-control" id="exampleInputEmail3" placeholder="Email">
+                <label for="inputModelo">Modelo</label>
+                <input type="text" class="form-control" id="inputModelo" name="modelo" placeholder="Informe o modelo. Ex.: Ford, Chevrolet...">
               </div>
-              <div class="form-group">
+              {{-- <div class="form-group">
                 <label for="exampleInputPassword4">Password</label>
                 <input type="password" class="form-control" id="exampleInputPassword4" placeholder="Password">
-              </div>
+              </div> --}}
+
               <div class="form-group">
-                <label for="exampleSelectGender">Gender</label>
-                <select class="form-control" id="exampleSelectGender">
-                  <option>Male</option>
-                  <option>Female</option>
+                <label for="inputAnoFabricacao">Ano Fabricação</label>
+                <input type="number" class="form-control" id="inputAnoFabricacao" name="anoFabricacao" placeholder="Informe o ano de fabricação. Ex.: 2000">
+              </div>
+
+              <div class="form-group">
+                <label for="inputSituacao">Situação</label>
+                
+                <select class="form-control" id="inputSituacao" name="situacao">
+                  <option value="">Selecione uma situação</option>
+                  <option value="liberado">Liberado</option>
+                  <option value="manutencao">Manutenção</option>
                 </select>
               </div>
-              <div class="form-group">
-                <label>File upload</label>
-                <input type="file" name="img[]" class="file-upload-default">
-                <div class="input-group col-xs-12">
-                  <input type="text" class="form-control file-upload-info" disabled="" placeholder="Upload Image">
-                  <span class="input-group-append">
-                    <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
-                  </span>
-                </div>
-              </div>
-              <div class="form-group">
-                <label for="exampleInputCity1">City</label>
-                <input type="text" class="form-control" id="exampleInputCity1" placeholder="Location">
-              </div>
-              <div class="form-group">
+              
+              {{-- <div class="form-group">
                 <label for="exampleTextarea1">Textarea</label>
                 <textarea class="form-control" id="exampleTextarea1" rows="4"></textarea>
-              </div>
-              <button type="submit" class="btn btn-primary mr-2">Submit</button>
-              <button class="btn btn-dark">Cancel</button>
+              </div> --}}
+
+              <button type="submit" class="btn btn-primary mr-2">Salvar</button>
+              <button class="btn btn-dark">Cancelar</button>
             </form>
           </div>
         </div>

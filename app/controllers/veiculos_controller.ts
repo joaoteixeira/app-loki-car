@@ -1,11 +1,15 @@
 import type { HttpContext } from '@adonisjs/core/http'
+import Veiculo from '#models/veiculo'
 
 export default class VeiculosController {
   /**
    * Display a list of resource
    */
   async index({ view }: HttpContext) {
-    return view.render('pages/veiculos/index')
+
+    const veiculos = await Veiculo.all()
+
+    return view.render('pages/veiculos/index', { veiculos })
   }
 
   /**
@@ -18,7 +22,28 @@ export default class VeiculosController {
   /**
    * Handle form submission for the create action
    */
-  async store({ request }: HttpContext) {}
+  async store({ request, response, session }: HttpContext) {
+
+    const veiculo = await Veiculo.create({
+      marca: request.input('marca'),
+      modelo: request.input('modelo'),
+      anoFabricacao: request.input('anoFabricacao'),
+      anoModelo: 2000,
+      renavam: 1234567,
+      cor: 'cinza',
+      placa: 'NZH-9J34',
+      situacao: request.input('situacao'),
+    })
+    
+    if(veiculo.$isPersisted) {
+      session.flash('notificacao', {
+        type: 'success',
+        message: `Veículo ${veiculo.modelo} cadastrado com sucesso!`,
+      })
+    }
+
+    return response.redirect().toRoute('veiculos.index')
+  }
 
   /**
    * Show individual record
