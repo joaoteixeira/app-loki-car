@@ -1,5 +1,6 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import Veiculo from '#models/veiculo'
+import { createVeiculoValidator } from '#validators/veiculo'
 
 export default class VeiculosController {
   /**
@@ -23,9 +24,12 @@ export default class VeiculosController {
    * Handle form submission for the create action
    */
   async store({ request, response, session }: HttpContext) {
+    const dados = request.all()
+
+    const dadosValidos  = await createVeiculoValidator.validate(dados)
 
     const veiculo = await Veiculo.create({
-      marca: request.input('marca'),
+      marca: dadosValidos.marca,
       modelo: request.input('modelo'),
       anoFabricacao: request.input('anoFabricacao'),
       anoModelo: 2000,
