@@ -9,76 +9,80 @@
   </nav> --}}
 </div>
 <div class="row">
-    <div class="col-12 grid-margin stretch-card">
-        <div class="card">
-          <div class="card-body">
+  <div class="col-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
 
-            <form class="forms-sample" method="POST" action="{{ route('veiculos.store') }}">
-              
-              {{ csrfField() }}
-              
-              <div class="form-group">
-                <label for="inputMarca">Marca</label>
-                <input type="text" class="form-control" id="inputMarca" value="{{ old('marca') || '' }}" name="marca"  placeholder="Informe a marca">
-                
-                @inputError('marca')
-                  <span class="text-danger"> {{ $messages.join(', ') }} </span>
-                @end
+        <form class="forms-sample" method="POST"
+          action="{{ !veiculo ? route('veiculos.store') : route('veiculos.update', { id: veiculo.id }, { qs: { _method: 'PUT' } }) }}">
 
-              </div>
-              <div class="form-group">
-                <label for="inputModelo">Modelo</label>
-                <input type="text" class="form-control" id="inputModelo" name="modelo" placeholder="Informe o modelo. Ex.: Ford, Chevrolet...">
-              </div>
-              {{-- <div class="form-group">
-                <label for="exampleInputPassword4">Password</label>
-                <input type="password" class="form-control" id="exampleInputPassword4" placeholder="Password">
-              </div> --}}
+          {{ csrfField() }}
 
-              <div class="form-group">
-                <label for="inputAnoFabricacao">Ano Fabricação</label>
-                <input type="text" class="form-control" id="inputAnoFabricacao" name="anoFabricacao" value="{{ old('anoFabricacao') || '' }}" placeholder="Informe o ano de fabricação. Ex.: 2000">
-                
-                @inputError('anoFabricacao')
-                  <span class="text-danger"> {{ $messages.join(', ') }} </span>
-                @end
+          <div class="form-group">
+            <label for="inputMarca">Marca</label>
+            <input type="text" class="form-control" id="inputMarca" value="{{ old('marca') || veiculo?.marca ||'' }}"
+              name="marca" placeholder="Informe a marca">
 
-              </div>
+            @inputError('marca')
+            <span class="text-danger"> {{ $messages.join(', ') }} </span>
+            @end
 
-              <div class="form-group">
-                <label for="inputPlaca">Placa</label>
-                <input type="text" class="form-control" id="inputPlaca" name="placa" placeholder="Informe a placa. Ex.: AAA-9E01">
-                
-                @inputError('placa')
-                  <span class="text-danger"> {{ $messages.join(', ') }} </span>
-                @end
-
-              </div>
-
-              <div class="form-group">
-                <label for="inputSituacao">Situação</label>
-                
-                <select class="form-control" id="inputSituacao" name="situacao">
-                  <option value="teste">Selecione uma situação</option>
-                  <option value="liberado" {{ old('situacao') == 'liberado' ? 'selected' : '' }}>Liberado</option>
-                  <option value="manutencao" {{ old('situacao') == 'manutencao' ? 'selected' : '' }}>Manutenção</option>
-                </select>
-
-                @inputError('situacao')
-                  <span class="text-danger"> {{ $messages.join(', ') }} </span>
-                @end
-              </div>
-              
-              {{-- <div class="form-group">
-                <label for="exampleTextarea1">Textarea</label>
-                <textarea class="form-control" id="exampleTextarea1" rows="4"></textarea>
-              </div> --}}
-
-              <button type="submit" class="btn btn-primary mr-2">Salvar</button>
-              <button class="btn btn-dark">Cancelar</button>
-            </form>
           </div>
-        </div>
+          <div class="form-group">
+            <label for="inputModelo">Modelo</label>
+            <input type="text" class="form-control" id="inputModelo" value="{{ old('modelo') || veiculo?.modelo ||'' }}"
+              name="modelo" placeholder="Informe o modelo. Ex.: Ford, Chevrolet...">
+          </div>
+          {{-- <div class="form-group">
+            <label for="exampleInputPassword4">Password</label>
+            <input type="password" class="form-control" id="exampleInputPassword4" placeholder="Password">
+          </div> --}}
+
+          <div class="form-group">
+            <label for="inputAnoFabricacao">Ano Fabricação</label>
+            <input type="text" class="form-control" id="inputAnoFabricacao" name="anoFabricacao"
+              value="{{ old('anoFabricacao') || veiculo?.anoFabricacao || '' }}"
+              placeholder="Informe o ano de fabricação. Ex.: 2000">
+
+            @inputError('anoFabricacao')
+            <span class="text-danger"> {{ $messages.join(', ') }} </span>
+            @end
+
+          </div>
+
+          <div class="form-group">
+            <label for="inputPlaca">Placa</label>
+            <input type="text" class="form-control" id="inputPlaca"
+              value="{{ old('anoFabricacao') || veiculo?.placa || '' }}" name="placa"
+              placeholder="Informe a placa. Ex.: AAA-9E01">
+
+            @inputError('placa')
+            <span class="text-danger"> {{ $messages.join(', ') }} </span>
+            @end
+
+          </div>
+
+          <div class="form-group">
+            <label for="inputSituacao">Situação</label>
+
+            <select class="form-control" id="inputSituacao" name="situacao">
+              <option value="teste">Selecione uma situação</option>
+              <option value="liberado" {{ old('situacao')=='liberado' || veiculo?.situacao=='liberado' ? 'selected' : ''
+                }}>Liberado</option>
+              <option value="manutencao" {{ old('situacao')=='manutencao' || veiculo?.situacao=='manutencao' ? 'selected'
+                : '' }}>Manutenção</option>
+            </select>
+
+            @inputError('situacao')
+            <span class="text-danger"> {{ $messages.join(', ') }} </span>
+            @end
+          </div>
+
+          <button type="submit" class="btn btn-primary mr-2">Salvar</button>
+          <button class="btn btn-dark">Cancelar</button>
+        </form>
       </div>
+    </div>
+  </div>
 </div>
 @end

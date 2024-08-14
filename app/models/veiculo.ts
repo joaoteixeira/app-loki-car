@@ -13,7 +13,7 @@ export default class Veiculo extends BaseModel {
 
   @column()
   declare anoFabricacao: number
-  
+
   @column()
   declare anoModelo: number
 

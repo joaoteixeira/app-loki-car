@@ -1,13 +1,12 @@
-import type { HttpContext } from '@adonisjs/core/http'
 import Veiculo from '#models/veiculo'
 import { createVeiculoValidator, messagesVeiculoProvider } from '#validators/veiculo'
+import type { HttpContext } from '@adonisjs/core/http'
 
 export default class VeiculosController {
   /**
    * Display a list of resource
    */
   async index({ view }: HttpContext) {
-
     const veiculos = await Veiculo.all()
 
     return view.render('pages/veiculos/index', { veiculos })
@@ -26,17 +25,13 @@ export default class VeiculosController {
   async store({ request, response, session }: HttpContext) {
     const dados = request.all()
 
-    console.log(dados)
-
     const dadosValidos = await createVeiculoValidator.validate(dados, {
-      messagesProvider: messagesVeiculoProvider
+      messagesProvider: messagesVeiculoProvider,
     })
-
-    console.log(dadosValidos)
 
     const veiculo = await Veiculo.create({
       marca: dadosValidos.marca,
-      // modelo: dadosValidos.modelo,
+      modelo: dadosValidos.modelo,
       anoFabricacao: dadosValidos.anoFabricacao,
       anoModelo: 2000,
       renavam: 1234567,
@@ -58,20 +53,63 @@ export default class VeiculosController {
   /**
    * Show individual record
    */
-  async show({ params }: HttpContext) { }
+  async show({ params }: HttpContext) {}
 
   /**
    * Edit individual record
    */
-  async edit({ params }: HttpContext) { }
+  async edit({ params, view }: HttpContext) {
+    const veiculo = await Veiculo.find(params.id)
+
+    return view.render('pages/veiculos/create', { veiculo })
+  }
 
   /**
    * Handle form submission for the edit action
    */
-  async update({ params, request }: HttpContext) { }
+  async update({ params, request, response, session }: HttpContext) {
+    const veiculo = await Veiculo.find(params.id)
+
+    if (!veiculo) {
+      session.flash('notificacao', {
+        type: 'danger',
+        message: `Veículo informado não encontrado!`,
+      })
+    }
+
+    const dados = await createVeiculoValidator.validate(request.all(), {
+      messagesProvider: messagesVeiculoProvider,
+    })
+
+    await veiculo?.merge(dados).save()
+
+    if (veiculo?.$isPersisted) {
+      session.flash('notificacao', {
+        type: 'warning',
+        message: `Veículo ${veiculo.modelo} atualizado com sucesso!`,
+      })
+    }
+
+    return response.redirect().toRoute('veiculos.index')
+  }
 
   /**
    * Delete record
    */
-  async destroy({ params }: HttpContext) { }
+  async destroy({ params, session, response }: HttpContext) {
+    const veiculo = await Veiculo.find(params.id)
+
+    console.log(veiculo)
+
+    await veiculo?.delete()
+
+    if (veiculo?.$isDeleted) {
+      session.flash('notificacao', {
+        type: 'success',
+        message: `Veículo excluído com sucesso!`,
+      })
+    }
+
+    return response.redirect().toRoute('veiculos.index')
+  }
 }
