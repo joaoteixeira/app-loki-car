@@ -12,6 +12,7 @@ export const messagesVeiculoProvider = new SimpleMessagesProvider({
 
 export const createVeiculoValidator = vine.compile(
   vine.object({
+    categoria: vine.number().positive().withoutDecimals(),
     marca: vine.string().trim().minLength(3),
     modelo: vine.string().trim().minLength(3),
     anoFabricacao: vine.number().withoutDecimals().min(2000),

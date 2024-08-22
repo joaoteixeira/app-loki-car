@@ -29,6 +29,9 @@ export default class Veiculo extends BaseModel {
   declare cor: string
 
   @column()
+  declare valor: number
+
+  @column()
   declare situacao: string
 
   @column()

@@ -7,6 +7,8 @@
       <li class="breadcrumb-item active" aria-current="page">Form elements</li>
     </ol>
   </nav> --}}
+
+  <a class="btn btn-primary btn-fw" href="{{ route('veiculos.create') }}">+ Criar Veículo</a>
 </div>
 
 @flashMessage('notificacao')
@@ -35,6 +37,7 @@
                 <th>Marca</th>
                 <th>Modelo</th>
                 <th>Ano Fabricação/Modelo</th>
+                <th>Categoria</th>
                 <th>Ativo?</th>
                 <th>Opções</th>
               </tr>
@@ -49,6 +52,7 @@
                   <label class="badge badge-danger">{{ item.anoFabricacao }}</label>
                   <label class="badge badge-warning">{{ item.anoModelo }}</label>
                 </td>
+                <td><label class="badge badge-info  ">{{ item.categoria.nome }}</label></td>
                 <td class="text {{ item.ativo ? 'text-success' : 'text-danger' }}">
                   {{-- @if(item.ativo)
                   Sim
@@ -60,12 +64,17 @@
                   <i class="mdi  {{ item.ativo ? 'mdi-check-all' : 'mdi-close' }}"></i>
                 </td>
                 <td style="display: flex;">
+
+
                   <a href="{{ route('veiculos.edit', [item.id]) }}" class="button mr-1">
                     <i class="mdi mdi-border-color"></i>
                   </a>
 
                   <form id="form-delete-{{ item.id }}" method="POST"
-                    action="{{ route('veiculos.destroy', { id: item.id  }, { qs: { _method: 'DELETE' } }) }}">
+                    action="{{
+                      route('veiculos.destroy', { id: item.id  }, { qs: { _method: 'DELETE' } })
+                    }}">
+
                     {{ csrfField() }}
 
                     <a href="#" onclick="document.getElementById('form-delete-{{item.id}}').submit();">

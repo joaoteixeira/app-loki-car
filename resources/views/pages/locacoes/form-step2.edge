@@ -1,0 +1,130 @@
+@layout()
+<div class="page-header">
+  <h3 class="page-title"> Locação -
+
+
+    {{ !veiculo ? 'Nova - Passo 2': `Atualização` }}
+
+
+
+  </h3>
+  {{-- <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="#">Forms</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Form elements</li>
+    </ol>
+  </nav> --}}
+
+
+
+
+
+</div>
+<div class="row">
+  <div class="col-12">
+    @flashMessage('notificacao')
+    <div class="alert alert-{{ $message.type }}">
+      {{ $message.message }}
+    </div>
+    @end
+  </div>
+
+  <div class="col-12 grid-margin stretch-card">
+    <div class="card">
+
+      <div class="card-body">
+
+        <form class="forms-sample" method="POST" action="{{ route('locacoes.step2-add',  { id: locacao.id  }) }}">
+
+          {{ csrfField() }}
+
+          <input type="hidden" name="_step" value="2" />
+
+          <div class="form-group row">
+            <div class="col">
+              <label for="inputCliente">Cliente</label>
+              <input type="text" class="form-control" id="inputCliente" value="{{ locacao?.cliente.nome || '' }}" />
+            </div>
+            <div class="col">
+              <label for="inputDataInicial">Data Inicial</label>
+              <input type="text" class="form-control" id="inputDataInicial"
+                value="{{ locacao?.dataInicial.toFormat('dd/MM/yyyy') || '' }}" />
+            </div>
+            <div class="col">
+              <label for="inputDataFinal">Data Final</label>
+              <input type="text" class="form-control" id="inputDataFinal"
+                value="{{ old('dataFinal') || locacao?.dataFinal.toFormat('dd/MM/yyyy') || '' }}" />
+
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <div class="col">
+              <label for="inputCliente">Veículo</label>
+
+              <select class="form-control" id="inputCliente" name="veiculo">
+                <option value="teste">Selecione um Veículo</option>
+
+                @if(veiculos && veiculos.length)
+                @each(item in veiculos)
+                <option value="{{item.id}}">{{item.marca}} - {{item.modelo}}</option>
+                @end
+                @end
+              </select>
+            </div>
+            <div class="col">
+              <button type="submit" class="btn btn-primary" style="margin-top: 1.7rem;">
+                Adicionar Veículo
+              </button>
+            </div>
+
+          </div>
+
+
+        </form>
+
+        @if(veiculos.length)
+        <div class="table-responsive">
+
+          <table class="table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Marca</th>
+                <th>Modelo</th>
+                <th>Valor</th>
+              </tr>
+            </thead>
+            <tbody>
+              @each((veiculo, index) in locacao.veiculos)
+
+              <tr>
+                <td>{{ index + 1 }}</td>
+                <td>{{ veiculo.marca }}</td>
+                <td>{{ veiculo.modelo }}</td>
+                <td>R$ {{ veiculo.$extras.pivot_valor }}</td>
+              </tr>
+              @end
+            </tbody>
+          </table>
+        </div>
+        @end
+
+        <div class="form-group row mt-3 mb-5">
+          <div class="col col-2">
+            <label for="inputDataInicial">Valor Total</label>
+            <input type="text" class="form-control" id="inputDataInicial"
+              value="R$ {{ locacao?.valorTotal || '0,00' }}" />
+          </div>
+
+        </div>
+
+        <form>
+          <a class="btn btn-success" href="{{ route('locacoes.index') }}">Finalizar Locação</a>
+          <a class="btn btn-dark" href="{{ route('locacoes.index') }}">Cancelar</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+@end

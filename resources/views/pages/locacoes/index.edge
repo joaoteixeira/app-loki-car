@@ -1,0 +1,60 @@
+@layout()
+<div class="page-header">
+  <h3 class="page-title"> Locações </h3>
+  {{-- <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="#">Forms</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Form elements</li>
+    </ol>
+  </nav> --}}
+
+  <a class="btn btn-primary btn-fw" href="{{ route('locacoes.create') }}">+ Nova Locação</a>
+</div>
+
+@flashMessage('notificacao')
+<div class="alert alert-{{ $message.type }}">
+  {{ $message.message }}
+</div>
+@end
+
+<div class="row">
+  <div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+
+        @if(!locacoes.length)
+        <div class="alert alert-secondary">
+          <i class="mdi mdi-alert-box icon-md"></i> Nenhum locação encontrada na base de dados!
+        </div>
+        @else
+        <div class="table-responsive">
+
+          <table class="table">
+            <thead>
+              <tr>
+                <th width="2%">#</th>
+                <th>Cliente</th>
+                <th>Data inicial e final</th>
+                <th class="text-center">Qtd dias</th>
+                <th>Opções</th>
+              </tr>
+            </thead>
+            <tbody>
+              @each((item, index) in locacoes)
+              <tr>
+                <td>{{ index + 1 }}</td>
+                <td>{{ item.cliente?.nome || '--' }}</td>
+                <td>{{ item.dataInicial.toFormat('dd/MM/yyyy') }} à {{ item.dataFinal.toFormat('dd/MM/yyyy') }}</td>
+                <td class="text-center">{{ item.quantidadeDias }}</td>
+                <td>-</td>
+              </tr>
+              @end
+            </tbody>
+          </table>
+        </div>
+        @end
+      </div>
+    </div>
+  </div>
+</div>
+@end

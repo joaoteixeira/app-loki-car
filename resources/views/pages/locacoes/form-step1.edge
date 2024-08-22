@@ -1,0 +1,81 @@
+@layout()
+<div class="page-header">
+  <h3 class="page-title"> Locação -
+
+
+    {{ !veiculo ? 'Nova - Passo 1': `Atualização` }}
+
+
+
+  </h3>
+  {{-- <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="#">Forms</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Form elements</li>
+    </ol>
+  </nav> --}}
+
+
+</div>
+<div class="row">
+  <div class="col-12 grid-margin stretch-card">
+    <div class="card">
+
+      <div class="card-body">
+
+        <form class="forms-sample" method="POST" action="
+          {{ !locacao ?
+            route('locacoes.store') :
+            route('locacoes.update', { id: locacao.id }, { qs: { _method: 'PUT' } })
+          }}">
+
+          {{ csrfField() }}
+
+          <input type="hidden" name="_step" value="1" />
+
+          <div class="form-group">
+            <label for="inputCliente">Cliente</label>
+
+            <select class="form-control" id="inputCliente" name="cliente">
+              <option value="teste">Selecione um cliente</option>
+
+              @if(clientes && clientes.length)
+                @each(item in clientes)
+                <option value="{{item.id}}">{{item.nome}}</option>
+                @end
+              @end
+            </select>
+          </div>
+          <div class="form-group row">
+            <div class="col">
+              <label for="inputDataInicial">Data Inicial</label>
+              <input type="date" class="form-control" id="inputDataInicial"
+                value="{{ old('dataInicial') || locacao?.dataInicial || '' }}" name="dataInicial"
+                placeholder="Informe a Data Inicial">
+
+              @inputError('dataInicial')
+              <span class="text-danger"> {{ $messages.join(', ') }} </span>
+              @end
+            </div>
+            <div class="col">
+              <label for="inputDataFinal">Data Final</label>
+              <input type="date" class="form-control" id="inputDataFinal"
+                value="{{ old('dataFinal') || locacao?.dataFinal || '' }}" name="dataFinal"
+                placeholder="Informe a Data Final">
+
+              @inputError('dataFinal')
+              <span class="text-danger"> {{ $messages.join(', ') }} </span>
+              @end
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary mr-2">
+            Avançar
+          </button>
+          <a class="btn btn-dark" href="{{ route('locacoes.index') }}">Cancelar</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+@end
